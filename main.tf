@@ -1,23 +1,24 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.16"
-    }
-  }
-
-  required_version = ">= 1.2.0"
-}
-
 provider "aws" {
-  region  = "us-west-2"
+    region = "us-east-1"
+    //version = "~> 2.46" (No longer necessary)
 }
 
-resource "aws_instance" "app_server" {
-  ami           = "ami-830c94e3"
-  instance_type = "t2.micro"
+# plan - execute 
+resource "aws_s3_bucket" "my_s3_bucket" {
+    bucket = "my-s3-bucket-in28minutes-rangak-002"
+ #   versioning {
+ #       enabled = true
+ #   }
+}
 
-  tags = {
-    Name = "ExampleAppServerInstance"
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.my_s3_bucket.id
+  versioning_configuration {
+    status = "Enabled"
   }
+}
+
+
+resource "aws_iam_user" "my_iam_user" {
+    name = "my_iam_user_abc_updated"
 }
